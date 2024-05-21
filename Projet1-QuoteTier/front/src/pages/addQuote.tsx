@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { backendHost } from '../const';
 
 type QuoteForm = {
   quote: string;
@@ -19,7 +20,7 @@ const AddQuote = () => {
 
   const onSubmit = async (data: QuoteForm) => {
     try {
-      const response = await fetch("http://localhost:5000/quotes", {
+      const response = await fetch(backendHost+"/quotes", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
