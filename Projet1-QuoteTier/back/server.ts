@@ -26,9 +26,10 @@ app.post("/quotes", async (request: Request, response: Response) => {
     author : request.body.author,
     quote: request.body.quote,
     grade: {
-dislikeAmmount:0,
-likeAmmount:0 
+      dislikeAmmount:0,
+      likeAmmount:0 ,
     },
+    comments:[],
     id:quotePrefix+Date.now()
   }
   await redisClient.set(quote.id, JSON.stringify(quote)) 
@@ -63,7 +64,21 @@ app.post("/dislike",  async (request: Request, response: Response) => {
   await redisClient.set(quote.id, JSON.stringify(quote))
   response.status(200).send(quote);
   
-  })
+})
+
+/** comment */
+app.post("/comment",  async (request: Request, response: Response) => {
+  const   quoteId =   request.body.quoteId
+  const quoteAsString = await redisClient.get(quoteId)
+  if(quoteAsString=== null){
+    response.status(404).send("no quote find with this id");
+  }
+  const quote = JSON.parse(quoteAsString!)as IQuote
+  quote.comments.push (request.body.comment)
+  
+  await redisClient.set(quote.id, JSON.stringify(quote))
+  response.status(200).send(quote);
+})
 
 app.listen(BACKEND_PORT, async () => { 
   await redisClient.connect();

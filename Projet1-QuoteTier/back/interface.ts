@@ -8,6 +8,7 @@ export interface IQuote{
     grade:{
         likeAmmount:number,
         dislikeAmmount:number,
-    }
+    }, 
+    comments : string[],
     id:string
 }
