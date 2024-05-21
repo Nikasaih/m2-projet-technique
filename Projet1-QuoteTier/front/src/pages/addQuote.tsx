@@ -37,8 +37,8 @@ const AddQuote = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <div className="flex justify-center min-h-screen bg-gray-100">
+      <div className="bg-white mt-5 p-6 rounded-lg shadow-md w-full max-w-md h-full">
         <h1 className="text-4xl font-bold mb-4 text-center">Add a Quote</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
