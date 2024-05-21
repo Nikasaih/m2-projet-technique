@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "873679637512",
+    "project_id": "coincollector-59b5b",
+    "storage_bucket": "coincollector-59b5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873679637512:android:54acaea93c3851fef395bd",
+        "android_client_info": {
+          "package_name": "com.example.front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfZI8ij34iiPv49S9kQK1xG9x2dsIm-Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
