@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Home from '../pages/home';
+import { backendHost } from '../const';
+
 
 global.fetch = jest.fn();
 
@@ -99,7 +101,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('like-button-1'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/like', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith(`${backendHost}/like`, expect.any(Object));
       expect(screen.getByText('6')).toBeInTheDocument();
     });
   });
@@ -128,7 +130,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('dislike-button-1'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/dislike', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith(`${backendHost}/dislike`, expect.any(Object));
       expect(screen.getByText('2')).toBeInTheDocument();
     });
   });
@@ -160,7 +162,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('add-comment-button-1'));
   
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/comment', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith(`${backendHost}/comment`, expect.any(Object));
       expect(screen.getByText('New Comment')).toBeInTheDocument();
     });
   });

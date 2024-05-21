@@ -3,6 +3,8 @@ import '@testing-library/jest-dom/extend-expect';
 import { useNavigate } from 'react-router-dom';
 import fetchMock from 'jest-fetch-mock';
 import AddQuote from '../pages/addQuote';
+import { backendHost } from '../const';
+
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
@@ -39,7 +41,7 @@ describe('AddQuote Component', () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost:5002/quotes',
+        `${backendHost}/quotes`,
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

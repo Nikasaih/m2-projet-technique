@@ -3,6 +3,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditQuote from '../pages/editQuote';
+import { backendHost } from '../const';
+
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -82,7 +84,7 @@ describe('EditQuote Component', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/quotes/1', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith(`${backendHost}/quotes/1`, expect.any(Object));
       expect(mockNavigate).toHaveBeenCalled();
     });
   });
@@ -140,7 +142,7 @@ describe('EditQuote Component', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/quotes/1', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith(`${backendHost}/quotes/1`, expect.any(Object));
       expect(console.error).toHaveBeenCalledWith('Error updating quote:', expect.any(TypeError));
     });
   });
