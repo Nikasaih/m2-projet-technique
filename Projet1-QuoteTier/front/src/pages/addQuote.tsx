@@ -14,9 +14,26 @@ const AddQuote = () => {
     },
   });
 
-  const onSubmit = (data: QuoteForm) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data: QuoteForm) => {
+    try {
+      const response = await fetch("http://localhost:5000/quotes", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Quote added:', result);
+        reset();
+      } else {
+        console.error('Failed to add quote');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

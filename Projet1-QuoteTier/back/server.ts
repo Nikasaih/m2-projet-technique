@@ -3,10 +3,13 @@ import dotenv from "dotenv";
 import { redisClient } from "./redisConnection";
 import {IQuote} from "./interface"
 import bodyParser from "body-parser"
+import cors from "cors";
+
 // configures dotenv to work in your application
 dotenv.config({path: "../.env"});
 const app = express();
 app.use(bodyParser.json())
+app.use(cors())
 const quotePrefix = "quote"
 const BACKEND_PORT = process.env.BACKEND_PORT;
 
