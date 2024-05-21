@@ -9,11 +9,11 @@ const Navbar: React.FC = () => {
           <Link to="/" className="text-white hover:bg-gray-700 px-3 py-2 rounded">Home</Link>
         </li>
         <li>
-          <Link to="/add-quote" className="text-white hover:bg-gray-700 px-3 py-2 rounded">Add Quote</Link>
+          <Link to="/add-quote" className="text-white hover:bg-gray-700 px-3 py-2 rounded">Create Quote</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/quote" className="text-white hover:bg-gray-700 px-3 py-2 rounded">Quote</Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

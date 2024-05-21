@@ -21,9 +21,9 @@ const Home = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleCreateQuote = () => {
-    navigate("/add-quote");
-  };
+  // const handleCreateQuote = () => {
+  //   navigate("/add-quote");
+  // };
 
   useEffect(() => {
     fetch("http://localhost:5000/quotes")
@@ -79,15 +79,18 @@ const Home = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={handleCreateQuote}>Create Quote</button>
+      {/* <button onClick={handleCreateQuote}>Create Quote</button> */}
       <div className="quotes-list">
         {filteredQuotes.map((quote) => (
           <div key={quote.id} className="quote-item">
             <p className="quote-text">"{quote.quote}"</p>
             <p className="quote-author">- {quote.author}</p>
-            <span className="text-green-700 font-semibold mr-5">Likes: {quote.grade.likeAmmount}</span>
-            <span className="text-red-700 font-semibold mr-5">Dislikes: {quote.grade.dislikeAmmount}</span>
-            <br /><br />
+            <p className="mb-5">
+              <span className="text-green-700 font-semibold mr-5">{quote.grade.likeAmmount}</span>
+              -
+              <span className="text-red-700 font-semibold ml-5 mr-5">{quote.grade.dislikeAmmount}</span>
+            </p>
+            <hr />
             <button onClick={() => handleLike(quote.id)} className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 mr-10"><FontAwesomeIcon icon={faThumbsUp} /></button>
             <button onClick={() => handleDislike(quote.id)} className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 mr-20"><FontAwesomeIcon icon={faThumbsDown} /></button>            
             <Link to={`/edit-quote/${quote.id}`} className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600"><FontAwesomeIcon icon={faEdit} /></Link>
