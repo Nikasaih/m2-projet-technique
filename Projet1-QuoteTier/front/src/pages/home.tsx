@@ -11,6 +11,7 @@ type Quote = {
 const Home = () => {
   const navigate = useNavigate();
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleCreateQuote = () => {
     navigate("/add-quote");
@@ -26,12 +27,21 @@ const Home = () => {
       .catch((error) => console.error("Error fetching quotes:", error));
   }, []);
 
+  const filteredQuotes = quotes.filter((quote) =>
+    quote.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container">
-      <input type="text" placeholder="Search..." />
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <button onClick={handleCreateQuote}>Create Quote</button>
       <div className="quotes-list">
-        {quotes.map((quote) => (
+        {filteredQuotes.map((quote) => (
           <div key={quote.id} className="quote-item">
             <p className="quote-text">"{quote.quote}"</p>
             <p className="quote-author">- {quote.author}</p>
