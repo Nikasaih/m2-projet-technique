@@ -15,8 +15,12 @@ const BACKEND_PORT = process.env.BACKEND_PORT;
 
 /** get all quotes */
 app.get("/quotes", async (request: Request, response: Response) => {
-const keys = await redisClient.keys("*");
-const values = await redisClient.mGet(keys)
+  const keys = await redisClient.keys("*");
+  if(keys.length === 0){
+    response.status(200).send("no quote for the moment");
+    return
+  }
+  const values = await redisClient.mGet(keys)
   response.status(200).send(values);
 }); 
 
@@ -38,17 +42,16 @@ app.post("/quotes", async (request: Request, response: Response) => {
 
 /** like */
 app.post("/like",  async (request: Request, response: Response) => {
-const   quoteId =   request.body.quoteId
-const quoteAsString = await redisClient.get(quoteId)
-if(quoteAsString=== null){
-  response.status(404).send("no quote find with this id");
-}
-const quote = JSON.parse(quoteAsString!)as IQuote
-quote.grade.likeAmmount += 1
+  const   quoteId =   request.body.quoteId
+  const quoteAsString = await redisClient.get(quoteId)
+  if(quoteAsString=== null){
+    response.status(404).send("no quote find with this id");
+  }
+  const quote = JSON.parse(quoteAsString!)as IQuote
+  quote.grade.likeAmmount += 1
 
-await redisClient.set(quote.id, JSON.stringify(quote))
-response.status(200).send(quote);
-
+  await redisClient.set(quote.id, JSON.stringify(quote))
+  response.status(200).send(quote);
 })
 
 /** dislike */
