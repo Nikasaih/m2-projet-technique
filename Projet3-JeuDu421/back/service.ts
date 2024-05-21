@@ -1,19 +1,23 @@
 import { GameStatusType, IGame, IPlayer } from "./interface"
 import { redisClient } from "./redisConnection"
-import { fromCombinationToPoint } from "./utils"
 
 export const saveWebsocket = async (clientId:string, ws:WebSocket)=>{
     await redisClient.set(clientId, JSON.stringify(ws))
 }
 
-export const getWebsocket =  (clientId:string):WebSocket=>{
-   throw new Error("kfsdnmkf")
-   //todo
+export const getWebsocket =  async (clientId:string):Promise<WebSocket>=>{
+    const wsData = await redisClient.get( clientId);
+    if (wsData) {
+        // Convert the JSON string back to a WebSocket object
+        const ws = JSON.parse(wsData);
+        return ws as WebSocket;
+    }
+   throw new Error("no ws available for this clientId")
 }
 
 export const notifyPlayer = (players:IPlayer[], msg:string)=>{
-    players.forEach(player=>{
-        const ws = getWebsocket(player.id)
+    players.forEach(async player=>{
+        const ws = await getWebsocket(player.id)
         ws.send(msg)
     })
 }

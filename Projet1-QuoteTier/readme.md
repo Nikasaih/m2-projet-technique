@@ -16,4 +16,5 @@ npm run start &
 cd ../front
 npm i 
 npm run start
+
 ```

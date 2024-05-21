@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./home.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faEdit, faComment } from '@fortawesome/free-solid-svg-icons';
+import { backendHost } from "../const";
 
 
 type Quote = {
@@ -27,9 +28,10 @@ const Home = () => {
   // };
 
   useEffect(() => {
-    fetch("http://localhost:5000/quotes")
+    fetch(backendHost+"/quotes")
       .then((response) => response.json())
       .then((data) => {
+        console.table(data)
         const quotes = data.map((quote: string) => JSON.parse(quote));
         setQuotes(quotes);
       })
@@ -43,7 +45,7 @@ const Home = () => {
     .sort((a, b) => b.grade.likeAmmount - a.grade.likeAmmount);
 
   const handleLike = (id: string) => {
-    fetch('http://localhost:5000/like', {
+    fetch(backendHost+'/like', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -58,7 +60,7 @@ const Home = () => {
   };
 
   const handleDislike = (id: string) => {
-    fetch('http://localhost:5000/dislike', {
+    fetch(backendHost+'/dislike', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -80,7 +82,7 @@ const Home = () => {
     const commentText = comments[id];
     if (!commentText) return;
 
-    fetch('http://localhost:5000/comment', {
+    fetch(backendHost+'/comment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

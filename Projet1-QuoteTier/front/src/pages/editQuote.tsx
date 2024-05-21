@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { backendHost } from '../const';
 
 type Quote = {
   id: string;
@@ -25,7 +26,7 @@ const EditQuote: React.FC = () => {
   const { register, handleSubmit, setValue } = useForm<FormValues>();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/quotes/${id}`)
+    fetch(`${backendHost}/quotes/${id}`)
       .then(response => response.json())
       .then(data => {
         setQuote(data);
@@ -36,7 +37,7 @@ const EditQuote: React.FC = () => {
   }, [id, setValue]);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    fetch(`http://localhost:5000/quotes/${id}`, {
+    fetch(`${backendHost}/quotes/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
