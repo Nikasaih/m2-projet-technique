@@ -39,7 +39,7 @@ describe('AddQuote Component', () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost:5000/quotes',
+        'http://localhost:5002/quotes',
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

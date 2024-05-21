@@ -82,7 +82,7 @@ describe('EditQuote Component', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/quotes/1', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/quotes/1', expect.any(Object));
       expect(mockNavigate).toHaveBeenCalled();
     });
   });
@@ -140,7 +140,7 @@ describe('EditQuote Component', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/quotes/1', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/quotes/1', expect.any(Object));
       expect(console.error).toHaveBeenCalledWith('Error updating quote:', expect.any(TypeError));
     });
   });

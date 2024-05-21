@@ -99,7 +99,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('like-button-1'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/like', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/like', expect.any(Object));
       expect(screen.getByText('6')).toBeInTheDocument();
     });
   });
@@ -128,7 +128,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('dislike-button-1'));
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/dislike', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/dislike', expect.any(Object));
       expect(screen.getByText('2')).toBeInTheDocument();
     });
   });
@@ -160,7 +160,7 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByTestId('add-comment-button-1'));
   
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5000/comment', expect.any(Object));
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:5002/comment', expect.any(Object));
       expect(screen.getByText('New Comment')).toBeInTheDocument();
     });
   });
