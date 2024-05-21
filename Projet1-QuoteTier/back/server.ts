@@ -26,8 +26,8 @@ app.post("/quotes", async (request: Request, response: Response) => {
     author : request.body.author,
     quote: request.body.quote,
     grade: {
-      average:undefined,
-      comments:[]
+dislikeAmmount:0,
+likeAmmount:0 
     },
     id:quotePrefix+Date.now()
   }
@@ -35,10 +35,35 @@ app.post("/quotes", async (request: Request, response: Response) => {
   response.status(200).send(quote);
 }); 
 
-/**upsert one comment */
-app.post("/comment", (request: Request, response: Response) => { 
-  response.status(200).send("Hello World");
-}); 
+/** like */
+app.post("/like",  async (request: Request, response: Response) => {
+const   quoteId =   request.body.quoteId
+const quoteAsString = await redisClient.get(quoteId)
+if(quoteAsString=== null){
+  response.status(404).send("no quote find with this id");
+}
+const quote = JSON.parse(quoteAsString!)as IQuote
+quote.grade.likeAmmount += 1
+
+await redisClient.set(quote.id, JSON.stringify(quote))
+response.status(200).send(quote);
+
+})
+
+/** dislike */
+app.post("/dislike",  async (request: Request, response: Response) => {
+  const   quoteId =   request.body.quoteId
+  const quoteAsString = await redisClient.get(quoteId)
+  if(quoteAsString=== null){
+    response.status(404).send("no quote find with this id");
+  }
+  const quote = JSON.parse(quoteAsString!)as IQuote
+  quote.grade.dislikeAmmount += 1
+  
+  await redisClient.set(quote.id, JSON.stringify(quote))
+  response.status(200).send(quote);
+  
+  })
 
 app.listen(BACKEND_PORT, async () => { 
   await redisClient.connect();

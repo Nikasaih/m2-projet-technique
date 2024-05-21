@@ -6,8 +6,8 @@ export interface IQuote{
     quote: string,
     author:string,
     grade:{
-        average:number|undefined,
-        comments:IComment[]
+        likeAmmount:number,
+        dislikeAmmount:number,
     }
     id:string
 }
