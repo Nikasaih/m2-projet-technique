@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./home.css";
 
 type Quote = {
@@ -35,6 +35,7 @@ const Home = () => {
           <div key={quote.id} className="quote-item">
             <p className="quote-text">"{quote.quote}"</p>
             <p className="quote-author">- {quote.author}</p>
+            <Link to={`/edit-quote/${quote.id}`} className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600">Edit</Link>
           </div>
         ))}
       </div>

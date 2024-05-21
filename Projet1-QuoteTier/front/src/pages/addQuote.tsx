@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 type QuoteForm = {
@@ -7,6 +7,9 @@ type QuoteForm = {
 };
 
 const AddQuote = () => {
+
+  const navigate = useNavigate();
+
   const { register, handleSubmit, reset } = useForm<QuoteForm>({
     defaultValues: {
       quote: '',
@@ -27,7 +30,7 @@ const AddQuote = () => {
       if (response.ok) {
         const result = await response.json();
         console.log('Quote added:', result);
-        reset();
+        navigate('/');
       } else {
         console.error('Failed to add quote');
       }
