@@ -58,16 +58,18 @@ const EditQuote: React.FC = () => {
         <h1 className="text-4xl font-bold mb-4 text-center">Edit a Quote</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Author</label>
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700">Author</label>
           <input
+            id="author"
             type="text"
             {...register('author')}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Quote</label>
+          <label htmlFor="quote" className="block text-sm font-medium text-gray-700">Quote</label>
           <textarea
+            id='quote'
             {...register('quote')}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />

@@ -17,14 +17,9 @@ type Quote = {
 };
 
 const Home = () => {
-  // const navigate = useNavigate();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [comments, setComments] = useState<{ [key: string]: string }>({});
-
-  // const handleCreateQuote = () => {
-  //   navigate("/add-quote");
-  // };
 
   useEffect(() => {
     fetch("http://localhost:5000/quotes")
@@ -99,11 +94,10 @@ const Home = () => {
     <div className="container">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search by author"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {/* <button onClick={handleCreateQuote}>Create Quote</button> */}
       <div className="quotes-list">
         {filteredQuotes.map((quote) => (
           <div key={quote.id} className="quote-item">
@@ -116,8 +110,8 @@ const Home = () => {
             </p>
             <hr />
             <div>
-            <button onClick={() => handleLike(quote.id)} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-2"><FontAwesomeIcon icon={faThumbsUp} color="green" /></button>
-            <button onClick={() => handleDislike(quote.id)} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-10"><FontAwesomeIcon icon={faThumbsDown} color="red" /></button> 
+            <button onClick={() => handleLike(quote.id)} data-testid={`like-button-${quote.id}`} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-2"><FontAwesomeIcon icon={faThumbsUp} color="green" /></button>
+            <button onClick={() => handleDislike(quote.id)} data-testid={`dislike-button-${quote.id}`} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-10"><FontAwesomeIcon icon={faThumbsDown} color="red" /></button> 
             <input
                 type="text"
                 placeholder="Add a comment..."
@@ -125,7 +119,7 @@ const Home = () => {
                 onChange={(e) => handleCommentChange(quote.id, e.target.value)}
                 className="px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
-              <button onClick={() => handleCommentSubmit(quote.id)} className="ml-2 px-4 py-2 bg-white text-white rounded-md hover:bg-gray-200">
+              <button id="btnAddComment" data-testid={`add-comment-button-${quote.id}`} onClick={() => handleCommentSubmit(quote.id)} className="ml-2 px-4 py-2 bg-white text-white rounded-md hover:bg-gray-200">
                 <FontAwesomeIcon icon={faComment} color="orange"/>
               </button>
             </div>
