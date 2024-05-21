@@ -40,6 +40,28 @@ app.post("/quotes", async (request: Request, response: Response) => {
   response.status(200).send(quote);
 }); 
 
+/** get one quote by id */
+app.get("/quotes/:id", async (request: Request, response: Response) => {
+  const quoteId = request.params.id;
+  const quoteAsString = await redisClient.get(quoteId);
+  if (quoteAsString === null) {
+    response.status(404).send("No quote found with this id");
+  } else {
+    response.status(200).send(JSON.parse(quoteAsString));
+  }
+});
+
+/** update one quote by id */
+app.put("/quotes/:id", async (request: Request, response: Response) => {
+  const quoteId = request.params.id;
+  const updatedQuote: IQuote = {
+    ...request.body,
+    id: quoteId
+  };
+  await redisClient.set(quoteId, JSON.stringify(updatedQuote));
+  response.status(200).send(updatedQuote);
+});
+
 /** like */
 app.post("/like",  async (request: Request, response: Response) => {
   const   quoteId =   request.body.quoteId
