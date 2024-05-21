@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./home.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faThumbsDown, faEdit, faComment } from '@fortawesome/free-solid-svg-icons';
 
 
 type Quote = {
@@ -17,9 +17,10 @@ type Quote = {
 };
 
 const Home = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [comments, setComments] = useState<{ [key: string]: string }>({});
 
   // const handleCreateQuote = () => {
   //   navigate("/add-quote");
@@ -71,6 +72,29 @@ const Home = () => {
     .catch(error => console.error('Error disliking quote:', error));
   };
 
+  const handleCommentChange = (id: string, newComment: string) => {
+    setComments({ ...comments, [id]: newComment });
+  };
+
+  const handleCommentSubmit = (id: string) => {
+    const commentText = comments[id];
+    if (!commentText) return;
+
+    fetch('http://localhost:5000/comment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quoteId: id, comment: commentText })
+    })
+    .then(response => response.json())
+    .then(updatedQuote => {
+      setQuotes(quotes.map(quote => quote.id === updatedQuote.id ? updatedQuote : quote));
+      setComments({ ...comments, [id]: '' }); // Clear the comment input
+    })
+    .catch(error => console.error('Error commenting on quote:', error));
+  };
+
   return (
     <div className="container">
       <input
@@ -91,9 +115,32 @@ const Home = () => {
               <span className="text-red-700 font-semibold ml-5 mr-5">{quote.grade.dislikeAmmount}</span>
             </p>
             <hr />
-            <button onClick={() => handleLike(quote.id)} className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 mr-10"><FontAwesomeIcon icon={faThumbsUp} /></button>
-            <button onClick={() => handleDislike(quote.id)} className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 mr-20"><FontAwesomeIcon icon={faThumbsDown} /></button>            
-            <Link to={`/edit-quote/${quote.id}`} className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600"><FontAwesomeIcon icon={faEdit} /></Link>
+            <div>
+            <button onClick={() => handleLike(quote.id)} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-2"><FontAwesomeIcon icon={faThumbsUp} color="green" /></button>
+            <button onClick={() => handleDislike(quote.id)} className="bg-white text-white px-3 py-2 rounded hover:bg-gray-200 mr-10"><FontAwesomeIcon icon={faThumbsDown} color="red" /></button> 
+            <input
+                type="text"
+                placeholder="Add a comment..."
+                value={comments[quote.id] || ''}
+                onChange={(e) => handleCommentChange(quote.id, e.target.value)}
+                className="px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <button onClick={() => handleCommentSubmit(quote.id)} className="ml-2 px-4 py-2 bg-white text-white rounded-md hover:bg-gray-200">
+                <FontAwesomeIcon icon={faComment} color="orange"/>
+              </button>
+            </div>
+            {quote.comments.length > 0 && (
+              <div className="mt-4 bg-gray-100 p-4 rounded-md shadow-inner">
+                <h4 className="text-md font-semibold mb-2">Comments:</h4>
+                <ul className="list-disc list-inside space-y-1">
+                  {quote.comments.map((comment, index) => (
+                    <li key={index} className="text-sm text-gray-700">{comment}</li>
+                  ))}
+                </ul>
+              </div>
+            )}         
+            <hr className="mb-5" />
+            <Link to={`/edit-quote/${quote.id}`} className="bg-blue-500 text-white px-3 py-2 mt-5 rounded hover:bg-blue-600"><FontAwesomeIcon icon={faEdit} /></Link>
           </div>
         ))}
       </div>
