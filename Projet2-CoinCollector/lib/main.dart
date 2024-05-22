@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -31,12 +32,26 @@ class Coin {
   final int year;
   final String rarity;
   final int quantity;
-  final double value;
+  final int value;
+  final String url;
 
   Coin({
     required this.year,
     required this.rarity,
     required this.quantity,
     required this.value,
+    required this.url,
   });
+
+  factory Coin.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Coin(
+      year: data['year'],
+      rarity: data['rarity'],
+      quantity: data['quantity'],
+      value: data['value'],
+      url: data['url'],
+    );
+  }
 }
+
