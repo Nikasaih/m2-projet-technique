@@ -5,6 +5,7 @@ import bodyParser from "body-parser"
 import cors from "cors";
 import expressWs from "express-ws"
 import { saveWebsocket } from "./service";
+import { appRoute } from "./route";
 
 // configures dotenv to work in your application
 dotenv.config({path: "../.env"});
@@ -15,7 +16,7 @@ const appWs = expressWs(app)
 
 const BACKEND_PORT = process.env.BACKEND_PORT;
 
-appWs.app.ws("/", (ws:WebSocket, req:Request)=>{
+appWs.app.ws("/", (ws, req:Request)=>{
   if(req.socket.remoteAddress){
     saveWebsocket(req.socket.remoteAddress , ws)
   }
@@ -24,6 +25,8 @@ appWs.app.ws("/", (ws:WebSocket, req:Request)=>{
     throw new Error("no remote address")
   }
 })
+
+appRoute(app)
 
 app.listen(BACKEND_PORT, async () => { 
   await redisClient.connect();

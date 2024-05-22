@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:front/TakePictureScreen.dart';
+import 'TakePictureScreen.dart';
 import 'main.dart';
+import 'database_service.dart';
+
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -15,12 +19,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Coin> _coins = [
-    Coin(year: 1990, rarity: 'Commune', quantity: 100, value: 50),
-    Coin(year: 1889, rarity: 'Rare', quantity: 5, value: 1000),
-    Coin(year: 2020, rarity: 'Très commune', quantity: 5000, value: 5),
-    Coin(year: 1965, rarity: 'Peu commune', quantity: 50, value: 150),
-  ];
+  final _dbService = DatabaseService();
+
+  List<Coin> _coins = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCoins();
+  }
+
+  Future<void> _fetchCoins() async {
+    try {
+      print('Fetching coins from Firestore...');
+      final coins = await _dbService.read();
+      print('Coins fetched: $coins');
+      setState(() {
+        _coins = coins;
+      });
+    } catch (e) {
+      print('Erreur lors de la récupération des pièces : $e');
+    }
+  }
+
+  bool isValidURL(String url) {
+    Uri? uri = Uri.tryParse(url);
+    return uri != null && (uri.isScheme('http') || uri.isScheme('https'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +56,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
+        child: _coins.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
           itemCount: _coins.length,
           itemBuilder: (context, index) {
             final coin = _coins[index];
@@ -69,6 +96,12 @@ class _HomePageState extends State<HomePage> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 5),
+                    if (isValidURL(coin.url))
+                      Image.network(coin.url)
+                    else
+                      Image.file(File(coin.url)),
+
+                    const SizedBox(height: 5),
                     TextButton(
                       style: TextButton.styleFrom(
                         foregroundColor: Theme.of(context).colorScheme.primary,
@@ -78,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(builder: (context) => TakePictureScreen(camera: widget.camera,)),
                       ); },
                       child: const Text('TextButton'),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -89,4 +122,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

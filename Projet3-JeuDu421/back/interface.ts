@@ -2,7 +2,8 @@ export enum GameStatusType {
     CANCELED,
     PENDING,
     PLAYING_CHARGE,
-    PLAYING_DECHARGE
+    PLAYING_DECHARGE,
+    FINISHED
 }
 export interface IPlayer {
     id:string,
@@ -11,5 +12,7 @@ export interface IPlayer {
 export interface IGame {
     players :IPlayer[]
     status:GameStatusType
-    gameId:string
+    gameId:string,
+    pot: number,
+    playerIdToPlay:string
 }

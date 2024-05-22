@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:front/AddCoin.dart';
 
 
 // A screen that allows users to take a picture using a given camera.
@@ -123,18 +124,18 @@ class DisplayPictureScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TakePictureScreen(camera: camera)),
-                  );
+                  Navigator.pop(context);
                 },
                 child: const Text('Retry'),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddCoin(imagePath: imagePath, camera: camera,)),
+                  );
                 },
-                child: const Text('OK'),
+                child: const Text('Create coin'),
               ),
             ],
           ),
