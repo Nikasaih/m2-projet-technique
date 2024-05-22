@@ -1,9 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:front/TakePictureScreen.dart';
 import 'main.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
   final String title;
+
+  final CameraDescription camera;
+
+  const HomePage({super.key, required this.title, required this.camera});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -63,6 +68,17 @@ class _HomePageState extends State<HomePage> {
                       'Valeur: ${coin.value}€',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
+                    const SizedBox(height: 5),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      onPressed: () { Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: widget.camera,)),
+                      ); },
+                      child: const Text('TextButton'),
+                    )
                   ],
                 ),
               ),
