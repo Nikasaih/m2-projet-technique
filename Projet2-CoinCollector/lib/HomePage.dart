@@ -1,11 +1,19 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'TakePictureScreen.dart';
+import 'main.dart';
 import 'ChartPage.dart';
 import 'database_service.dart';
-import 'main.dart';
+
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
   final String title;
+
+  final CameraDescription camera;
+
+  const HomePage({super.key, required this.title, required this.camera});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -30,6 +38,11 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print('Erreur lors de la récupération des pièces : $e');
     }
+  }
+
+  bool isValidURL(String url) {
+    Uri? uri = Uri.tryParse(url);
+    return uri != null && (uri.isScheme('http') || uri.isScheme('https'));
   }
 
   @override
@@ -84,7 +97,22 @@ class _HomePageState extends State<HomePage> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 5),
-                    Image.network(coin.url),
+                    if (isValidURL(coin.url))
+                      Image.network(coin.url)
+                    else
+                      Image.file(File(coin.url)),
+
+                    const SizedBox(height: 5),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      onPressed: () { Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: widget.camera,)),
+                      ); },
+                      child: const Text('TextButton'),
+                    ),
                   ],
                 ),
               ),

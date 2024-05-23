@@ -15,4 +15,13 @@ class DatabaseService {
       return [];
     }
   }
+
+  Future<void> write(Coin coin) async {
+    try {
+      await _firestore.collection("Coins").add(coin.toFirestore());
+      print("Coin added successfully");
+    } catch (e) {
+      print("Erreur lors de l'écriture des données: $e");
+    }
+  }
 }

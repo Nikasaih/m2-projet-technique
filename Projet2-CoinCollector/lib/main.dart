@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'TakePictureScreen.dart';
 import 'firebase_options.dart';
 import 'HomePage.dart';
 
@@ -9,11 +11,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+
+  runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CameraDescription camera;
+
+  const MyApp({super.key, required this.camera});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'Collection de Pièces'),
+      home: HomePage(title: 'Collection de Pièces', camera: camera),
+      //home: TakePictureScreen(camera: camera),
     );
   }
 }
@@ -44,6 +56,16 @@ class Coin {
     required this.url,
   });
 
+  Map<String, dynamic> toFirestore() {
+    return {
+      'year': year,
+      'rarity': rarity,
+      'quantity': quantity,
+      'value': value,
+      'url': url,
+    };
+  }
+
   factory Coin.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Coin(
@@ -55,4 +77,3 @@ class Coin {
     );
   }
 }
-

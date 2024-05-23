@@ -101,6 +101,7 @@ const checkDiceOnCharge = (result: number[], clientId: string, game: IGame) => {
   for (let i = 0; game.players.length < i; i++) {
     if (game.players[i].id === clientId) {
       game.players[i].point += dicePoint;
+      nextPlayer(game, i);
     }
   }
 
@@ -108,6 +109,14 @@ const checkDiceOnCharge = (result: number[], clientId: string, game: IGame) => {
     game.status = GameStatusType.PLAYING_DECHARGE;
   }
   redisClient.set(game.gameId, JSON.stringify(game));
+  return game;
+};
+const nextPlayer = (game: IGame, playerIndex: number) => {
+  if (game.players.length - 1 > playerIndex) {
+    game.playerIdToPlay = game.players[1 + playerIndex].id;
+  } else {
+    game.playerIdToPlay = game.players[0].id;
+  }
   return game;
 };
 const checkDiceOnDecharge = (
@@ -120,6 +129,7 @@ const checkDiceOnDecharge = (
   for (let i = 0; game.players.length < i; i++) {
     if (game.players[i].id === clientId) {
       game.players[i].point -= dicePoint;
+      nextPlayer(game, i);
       if (game.players[i].point <= 0) {
         game.status = GameStatusType.FINISHED;
       }
@@ -129,6 +139,7 @@ const checkDiceOnDecharge = (
   redisClient.set(game.gameId, JSON.stringify(game));
   return game;
 };
+
 /** the front is the one responsible to launch the dice */
 export const checkDice = async (
   result: number[],
