@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'TakePictureScreen.dart';
 import 'main.dart';
+import 'ChartPage.dart';
 import 'database_service.dart';
 
 
@@ -20,7 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _dbService = DatabaseService();
-
   List<Coin> _coins = [];
 
   @override
@@ -31,9 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _fetchCoins() async {
     try {
-      print('Fetching coins from Firestore...');
       final coins = await _dbService.read();
-      print('Coins fetched: $coins');
       setState(() {
         _coins = coins;
       });
@@ -75,7 +73,10 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Année: ${coin.year}',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -118,6 +119,15 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChartPage()),
+          );
+        },
+        child: Icon(Icons.show_chart),
       ),
     );
   }
