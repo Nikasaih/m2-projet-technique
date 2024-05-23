@@ -130,6 +130,33 @@ app.post("/author", async (request: Request, response: Response) => {
 const setupBdd = () => {
   const authorList: string[] = ["Einstein", "Dalai Lama", "Hitler"];
   redisClient.set("author", JSON.stringify(authorList));
+
+  const quotes: IQuote[] = [
+    {
+      author: "Hitler",
+      quote: "Éprouver de la pitié pour les faibles va à l'encontre des lois de la nature !",
+      grade: {
+        dislikeAmmount: 11,
+        likeAmmount: 131,
+      },
+      comments: ["Great quote!", "Very inspiring."],
+      id: quotePrefix + "1",
+    },
+    {
+      author: "Woody Allen",
+      quote: "Le sexe entre deux personnes, c'est beau. Entre cinq personnes, c'est fantastique...",
+      grade: {
+        dislikeAmmount: 15,
+        likeAmmount: 4,
+      },
+      comments: [],
+      id: quotePrefix + "2",
+    }
+  ];
+
+  for (const quote of quotes) {
+    redisClient.set(quote.id, JSON.stringify(quote));
+  }
 };
 
 app

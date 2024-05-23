@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./home.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown, faEdit, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faThumbsDown, faEdit, faComment, faCheckCircle  } from '@fortawesome/free-solid-svg-icons';
 import { backendHost } from "../const";
 
 
@@ -21,6 +21,7 @@ const Home = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [comments, setComments] = useState<{ [key: string]: string }>({});
+  const [authors, setAuthors] = useState<string[]>([]);
 
   useEffect(() => {
     fetch(backendHost+"/quotes")
@@ -31,13 +32,21 @@ const Home = () => {
         setQuotes(quotes);
       })
       .catch((error) => console.error("Error fetching quotes:", error));
+
+    fetch(`${backendHost}/author`)
+      .then((response) => response.json())
+      .then((data) => {
+        setAuthors(data);
+      })
+      .catch((error) => console.error("Error fetching authors:", error));
   }, []);
 
   const filteredQuotes = quotes
     .filter((quote) =>
-      quote.author.toLowerCase().includes(searchTerm.toLowerCase())
+      quote.author && quote.author.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => b.grade.likeAmmount - a.grade.likeAmmount);
+
 
   const handleLike = (id: string) => {
     fetch(backendHost+'/like', {
@@ -103,8 +112,13 @@ const Home = () => {
       <div className="quotes-list">
         {filteredQuotes.map((quote) => (
           <div key={quote.id} className="quote-item">
-            <p className="quote-text">"{quote.quote}"</p>
-            <p className="quote-author">- {quote.author}</p>
+            <p className="quote-text">"{quote.quote}"</p>            
+            <p className="quote-author text-sm text-gray-700">
+              - {quote.author}
+              {authors.includes(quote.author) && (
+                <FontAwesomeIcon icon={faCheckCircle} color="green" className="ml-2" />
+              )}
+            </p>
             <p className="mb-5">
               <span className="text-green-700 font-semibold mr-5">{quote.grade.likeAmmount}</span>
               -

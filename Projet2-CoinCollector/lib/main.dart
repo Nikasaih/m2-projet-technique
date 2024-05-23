@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'TakePictureScreen.dart';
 import 'firebase_options.dart';
 import 'HomePage.dart';
 
