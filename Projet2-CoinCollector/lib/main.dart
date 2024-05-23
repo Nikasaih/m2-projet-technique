@@ -34,6 +34,7 @@ class Coin {
   final int quantity;
   final int value;
   final String url;
+  final Timestamp dateAdd = Timestamp.now();
 
   Coin({
     required this.year,
