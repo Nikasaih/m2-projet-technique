@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^20.12.12"
+    "@types/node": "^20.12.12",
+    "tailwindcss": "^3.4.3"
   }
 }

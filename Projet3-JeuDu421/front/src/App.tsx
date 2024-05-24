@@ -2,12 +2,13 @@ import React from "react";
 import CreateGame from "./pages/CreateGame";
 import GameControle from "./pages/GameControle";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Game from "./pages/Game";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             <>
@@ -16,7 +17,8 @@ const App: React.FC = () => {
             </>
           }
         />
-        <Route path="/start-game" element={<GameControle />} />
+        <Route path="/start-game" element={<GameControle />} /> */}
+        <Route path="/" element={<Game />} />
       </Routes>
     </Router>
   );
