@@ -34,7 +34,7 @@ export const startGame = async (clientId: string, gameId: string) => {
 export const createGame = async (clientId: string) => {
   const newGame: IGame = {
     players: [{ id: clientId, point: 0 }],
-    status: GameStatusType.PENDING,
+    status: GameStatusType.PLAYING_CHARGE,
     gameId: `${Date.now()}`,
     playerIdToPlay: clientId,
     pot: 21,
