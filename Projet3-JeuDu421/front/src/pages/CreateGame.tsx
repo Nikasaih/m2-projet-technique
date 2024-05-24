@@ -1,19 +1,22 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import du hook useNavigate
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { useBackend } from "../useBackend";
+import { GameContext, IGame } from '../interface';
 
 const CreateGame: React.FC = () => {
-  const navigate = useNavigate(); // Initialisation du hook useNavigate
+  const navigate = useNavigate(); 
   const { createGame } = useBackend();
+  const { setGame } = useContext(GameContext);
 
   const handleCreateGame = async () => {
     try {
-      await createGame();
-      // Rediriger l'utilisateur vers la page de démarrage de la partie
+      const result: IGame = await createGame();
+      if (setGame) {
+        setGame(result);
+      }
       navigate("/start-game");
     } catch (error) {
       console.error("Erreur lors de la création du jeu :", error);
-      // Gérer les erreurs ici, par exemple afficher un message d'erreur à l'utilisateur
     }
   };
 

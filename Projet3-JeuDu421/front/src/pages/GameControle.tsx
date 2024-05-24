@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useBackend } from "../useBackend";
 
 const GameControls: React.FC = () => {
+  const navigate = useNavigate();
   const { startGame } = useBackend();
 
   const handleStartGame = () => {
-    startGame();
+    const result = startGame();
+    navigate("/game");
   };
 
   return (

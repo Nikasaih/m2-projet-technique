@@ -10,11 +10,14 @@ export const useBackend = () => {
   const [currGame, setCurrGame] = useState<IGame | undefined>();
   const createGame = async () => {
     const c = await axios.post(httpHost + "/create-game");
+    console.log("Game created:", c.data);
     setCurrGame(c.data);
+    return c.data;
   };
-  const startGame = () => {
+  const startGame = async () => {
     if (currGame) {
-      axios.post(httpHost + "/start-game", { gameId: currGame.gameId });
+      const response = await axios.post(httpHost + "/start-game", { gameId: currGame.gameId });
+      return response.data;
     }
   };
   const joinGame = async (gameId: string) => {
@@ -40,20 +43,22 @@ export const useBackend = () => {
       setCurrGame(undefined);
     }
   };
-  const throwDice = () => {
-    if (!currGame) {
+  const throwDice = (gameId: string) => {
+    console.log("c'est " + gameId);
+    if (!gameId) {
       return;
     }
-    const value1 = 4;
-    const value2 = 2;
-    const value3 = 1;
-
+    const value1 = Math.floor(Math.random() * 6) + 1;
+    const value2 = Math.floor(Math.random() * 6) + 1;
+    const value3 = Math.floor(Math.random() * 6) + 1;
+  
     const throwResult = [value1, value2, value3];
     setMyDices(throwResult);
-
+    console.log('Dice values:', throwResult);
+  
     axios.post(httpHost + "/check-dice", {
       diceResults: throwResult,
-      gameId: currGame.gameId,
+      gameId: gameId,
     });
   };
 
@@ -78,5 +83,6 @@ export const useBackend = () => {
     throwDice,
     gameList,
     myDice,
+    currGame,
   };
 };
