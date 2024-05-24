@@ -4,7 +4,7 @@ import { useBackend } from "../useBackend";
 import { GameContext, IGame } from '../interface';
 
 const CreateGame: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { createGame } = useBackend();
   const { setGame } = useContext(GameContext);
 
@@ -21,9 +21,9 @@ const CreateGame: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Créer une nouvelle partie</h1>
-      <button onClick={handleCreateGame}>Créer une partie</button>
+    <div className="d-flex text-center mb-5">
+      {/* <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Créer une nouvelle partie</h1> */}
+      <button onClick={handleCreateGame} className="bg-green-600 text-white font-semibold py-2 px-4 rounded hover:bg-green-700">Créer une partie</button>
     </div>
   );
 };
